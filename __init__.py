@@ -1,16 +1,19 @@
-from random import randint
-from environment import Environment, LightPhase
+from io import TextIOWrapper
+from environment import Environment
+from runner import runner
+from loggers import CSVLogger
+from agents import RandomAgent, SequentialAgent, Agent
+
+def runTrials(output: TextIOWrapper, agent: Agent, trials: int = 100):
+    logger = CSVLogger(output)
+    for _ in range(trials):
+        runner(Environment(), agent, logger)
 
 def main():
-    environment = Environment()
-    frame = 1
-    phase = LightPhase.NorthSouthGreen
-    while True:
-        if frame % 50 == 0:
-            phase = [LightPhase.NorthSouthGreen, LightPhase.EastWestGreen, LightPhase.AllRed][randint(0, 2)]
-        print(environment.step(phase))
-        environment.render()
-        frame += 1
+    with open("./data/random-episodes.csv", "w") as file:
+        runTrials(file, RandomAgent())
+    with open("./data/sequential-episodes.csv", "w") as file:
+        runTrials(file, SequentialAgent(40))
 
 if __name__ == '__main__':
     main()

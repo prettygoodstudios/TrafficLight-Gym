@@ -2,6 +2,7 @@ from .rectangle import Rectangle
 from .car import Car
 from .constants import VehicleOrientation
 from .vehicle_map import VehicleMap
+from .vehicle import Vehicle
 
 def testVehicleMap():
     map = VehicleMap(10, 10)
