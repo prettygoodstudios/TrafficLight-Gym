@@ -10,12 +10,12 @@ def runTrials(output: TextIOWrapper, agent: Agent, trials: int = 100):
         runner(Environment(), agent, logger)
 
 def main():
+    with open("./data/q-table-episodes.csv", "w") as file:
+        runTrials(file, QTableAgent())
     with open("./data/random-episodes.csv", "w") as file:
         runTrials(file, RandomAgent())
     with open("./data/sequential-episodes.csv", "w") as file:
         runTrials(file, SequentialAgent(40))
-    with open("./data/q-table-episodes.csv", "w") as file:
-        runTrials(file, QTableAgent())
 
 if __name__ == '__main__':
     main()
