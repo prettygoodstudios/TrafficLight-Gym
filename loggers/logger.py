@@ -6,7 +6,7 @@ from environment import LightPhase
 class Logger(ABC):
 
     @abstractmethod
-    def logStep(self, action: LightPhase, state: tuple[tuple[int, int, int], int], reward: int) -> None:
+    def logStep(self, action: LightPhase, state: tuple[tuple[int, int, int, int], int], reward: int) -> None:
         """Logs the result of taking action"""
 
     @abstractmethod

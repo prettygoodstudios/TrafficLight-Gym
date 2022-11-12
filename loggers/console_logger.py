@@ -9,7 +9,7 @@ class ConsoleLogger(Logger):
     def __init__(self) -> None:
         self.__cumulativeReward = 0
 
-    def logStep(self, action: LightPhase, state: tuple[tuple[int, int, int], int], reward: int) -> None:
+    def logStep(self, action: LightPhase, state: tuple[tuple[int, int, int, int], int], reward: int) -> None:
         self.__cumulativeReward += reward
         print(f"Action: {action}, State: {state}, Reward: {reward}")
 

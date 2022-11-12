@@ -15,7 +15,7 @@ class CSVLogger(Logger):
     def __printHeaders(self):
         print("Loss, Reward", file=self.__fileHandle)
 
-    def logStep(self, action: LightPhase, state: tuple[tuple[int, int, int], int], reward: int) -> None:
+    def logStep(self, action: LightPhase, state: tuple[tuple[int, int, int, int], int], reward: int) -> None:
         self.__cumulativeReward += reward
 
     def logEpisode(self, agent: Agent) -> None:

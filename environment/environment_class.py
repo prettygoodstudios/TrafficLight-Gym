@@ -24,7 +24,7 @@ class Environment:
         return len(intersectionVehicles) - crashes * 10
 
     @property
-    def state(self):
+    def state(self) -> tuple[tuple[int, int, int, int], int]:
         return ([len(zone) for zone in self.__intersection.getVehiclesWithinYieldZones()], self.__intersection.phaseCount)
 
     def step(self, action: LightPhase):

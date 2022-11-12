@@ -11,10 +11,10 @@ class SequentialAgent(Agent):
         self.__phaseIndex = 0
         self.__interval = interval
 
-    def act(self, state: tuple[tuple[int, int, int], int]) -> LightPhase:
+    def act(self, state: tuple[tuple[int, int, int, int], int]) -> LightPhase:
         return self.__phases[self.__phaseIndex % len(self.__phases)]
 
-    def update(self, action: LightPhase, state: tuple[tuple[int, int, int], int], reward: int) -> None:
+    def update(self, action: LightPhase, state: tuple[tuple[int, int, int, int], int], reward: int) -> None:
         self.__frame += 1
         if self.__frame % self.__interval == 0:
             self.__phaseIndex += 1
