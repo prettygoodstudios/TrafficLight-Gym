@@ -1,10 +1,10 @@
 from io import TextIOWrapper
-from environment import Environment
+from environment import Environment, PyGameVisualizer
 from runner import runner
 from loggers import CSVLogger
 from agents import RandomAgent, SequentialAgent, Agent, QTableAgent
 
-def runTrials(output: TextIOWrapper, agent: Agent, trials: int = 100):
+def runTrials(output: TextIOWrapper, agent: Agent, trials: int = 400):
     logger = CSVLogger(output)
     for _ in range(trials):
         runner(Environment(), agent, logger)

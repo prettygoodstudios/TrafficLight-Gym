@@ -4,10 +4,11 @@ from .py_game_visualizer import PyGameVisualizer
 from .constants import LightPhase
 
 class Environment:
-    __slots__ = ['__intersection']
+    __slots__ = ['__intersection', '__crashes']
 
     def __init__(self, visualizer: Visualizer = None) -> None:
         self.__intersection = Intersection(visualizer)
+        self.__crashes = 0
 
     def __computeReward(self):
         intersectionVehicles = self.__intersection.getVehiclesWithinIntersection()
@@ -18,10 +19,11 @@ class Environment:
                 vehicleTwo = intersectionVehicles[j]
                 if vehicle.geometry.intersects(vehicleTwo.geometry):
                     crashes += 1
+                    self.__crashes += 1
                     self.__intersection.removeVehicle(vehicle)
                     self.__intersection.removeVehicle(vehicleTwo)
         
-        return len(intersectionVehicles) - crashes * 10
+        return len(intersectionVehicles) - crashes * 50
 
     @property
     def state(self) -> tuple[tuple[int, int, int, int], int]:
@@ -35,8 +37,10 @@ class Environment:
 
     def render(self):
         """Environment's render function"""
+        print(f"Crashes: {self.__crashes}, Phase Cycle Length: {self.__intersection.phaseCount}")
         self.__intersection.render()
 
     def reset(self):
         """Reset's the environment"""
         self.__intersection = Intersection()
+        self.__crashes = 0
