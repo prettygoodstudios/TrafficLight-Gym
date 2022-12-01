@@ -41,6 +41,10 @@ class Intersection:
         if visualizer:
             visualizer.setup()
 
+    def getTotalIdleTime(self) -> int:
+        """Returns the idle time of all of the vehicles in the intersection"""
+        return sum([sum([vehicle.idleTime for vehicle in lane.getVehicles()]) for lane in self.__lanes])
+
     def getVehiclesWithinIntersection(self) -> list[Vehicle]:
         """Returns a list of the vehicles currently traveling in the intersection"""
         vehicles = []

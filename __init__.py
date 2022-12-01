@@ -1,11 +1,12 @@
 from io import TextIOWrapper
 from environment import Environment, PyGameVisualizer
 from runner import runner
-from loggers import CSVLogger
+from loggers import CSVLogger, ConsoleLogger
 from agents import RandomAgent, SequentialAgent, Agent, QTableAgent
 
-def runTrials(output: TextIOWrapper, agent: Agent, trials: int = 400):
+def runTrials(output: TextIOWrapper, agent: Agent, trials: int = 1000):
     logger = CSVLogger(output)
+    # logger = ConsoleLogger()
     for _ in range(trials):
         runner(Environment(), agent, logger)
 
@@ -14,6 +15,8 @@ def main():
         runTrials(file, QTableAgent())
     with open("./data/random-episodes.csv", "w") as file:
         runTrials(file, RandomAgent())
+    with open("./data/sequential-episodes.csv", "w") as file:
+        runTrials(file, SequentialAgent(20))
     with open("./data/sequential-episodes.csv", "w") as file:
         runTrials(file, SequentialAgent(40))
 

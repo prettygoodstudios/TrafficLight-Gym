@@ -1,6 +1,5 @@
 from .visualizer import Visualizer
 from .intersection import Intersection
-from .py_game_visualizer import PyGameVisualizer
 from .constants import LightPhase
 
 class Environment:
@@ -23,7 +22,7 @@ class Environment:
                     self.__intersection.removeVehicle(vehicle)
                     self.__intersection.removeVehicle(vehicleTwo)
         
-        return len(intersectionVehicles) - crashes * 50
+        return -self.__intersection.getTotalIdleTime() - crashes * 50
 
     @property
     def state(self) -> tuple[tuple[int, int, int, int], int]:
@@ -37,7 +36,6 @@ class Environment:
 
     def render(self):
         """Environment's render function"""
-        print(f"Crashes: {self.__crashes}, Phase Cycle Length: {self.__intersection.phaseCount}")
         self.__intersection.render()
 
     def reset(self):

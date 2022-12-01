@@ -4,7 +4,7 @@ from .rectangle import Rectangle
 from .standard_driver import StandardDriver
 
 class Car(Vehicle):
-    __slots__ = ['__velocity', '__geometry', '__orientation', '__strategy']
+    __slots__ = ['__velocity', '__geometry', '__orientation', '__strategy', '__idleTime']
 
     def __init__(self, x: int, y: int, orientation: VehicleOrientation, vehicleAhead: Union[Vehicle, None], intersection: Rectangle):
         super().__init__()
@@ -13,11 +13,16 @@ class Car(Vehicle):
         dimensions = (2, 3) if orientation in {VehicleOrientation.North, VehicleOrientation.South} else (3, 2)
         self.__geometry = Rectangle(dimensions, (x, y))
         self.__strategy = StandardDriver(2, 1, 0.25, self, vehicleAhead, intersection)
+        self.__idleTime = 0
 
     def __updatePosition(self) -> None:
         velocityX, velocityY = self.__velocity
         x, y, *_ = self.__geometry
         self.__geometry = Rectangle(self.__geometry.dimensions, (x + velocityX, y + velocityY))
+        if velocityX + velocityY == 0:
+            self.__idleTime += 1
+        else:
+            self.__idleTime = 0
 
     def go(self) -> None:
         self.__velocity = self.__strategy.move()
@@ -41,7 +46,7 @@ class Car(Vehicle):
 
     @property
     def idleTime(self) -> int:
-        return 0
+        return self.__idleTime
 
     @property
     def orientation(self) -> VehicleOrientation:

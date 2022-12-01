@@ -18,30 +18,14 @@ def callOnePerNCalls(perCalls: int):
             return remembered
         return wrapper
     return decorator
-
-def ifDifferentReturnDefault(default):
-    """Decorator that causes decorated function to return default value for one call, when the return value changes"""
-    def decorator(func: callable):
-        last = None
-        returns = deque()
-        def wrapper(*args, **kwargs):
-            nonlocal last
-            if len(returns) == 0:
-                newValue = func(*args, *kwargs)
-                returns.append(newValue)
-                if newValue != last:
-                    last = newValue
-                    return default
-            return returns.popleft()
-        return wrapper
-    return decorator
              
 class QTableAgent(Agent):
     """Agent that uses Q-Table to learn optimal policy"""
-    __slots__ = ['__qTable']
-    __actions = [LightPhase.EastWestGreen, LightPhase.NorthSouthGreen, LightPhase.AllRed]
+    __slots__ = ['__qTable', '__previousAction', '__flipped']
+    __actions = [LightPhase.EastWestGreen, LightPhase.NorthSouthGreen]
     __learningRate = 0.2
-    __epsilon = 0.01
+    __epsilon = 0.04
+    __yieldDuration = 10
 
     def __init__(self) -> None:
         # First index time binned into 15 slots. Each slot represents 10 discrete time steps
@@ -50,7 +34,9 @@ class QTableAgent(Agent):
         # Fourth index is for the third yield zone cars capped to six
         # Fifth index is for the fourth yield zone cars capped to six
         # Sixth index is for the light phases
-        self.__qTable = np.zeros(shape=(15, 6, 6, 6, 6, 3), dtype=np.float16) + 2
+        self.__qTable = np.zeros(shape=(15, 6, 6, 6, 6, 2), dtype=np.float16)
+        self.__previousAction = LightPhase.EastWestGreen
+        self.__flipped = 0
 
     def __convertStateToIndexes(self, state: tuple[tuple[int, int, int, int], int]) -> tuple[int, int, int, int, int]:
         """Converts the state into it's corresponding index in the Q-Table"""
@@ -62,19 +48,29 @@ class QTableAgent(Agent):
         """Converts the state into the corresponding index in the Q-Table"""
         return self.__actions.index(action)
 
-    @callOnePerNCalls(10)
-    @ifDifferentReturnDefault(LightPhase.AllRed)
     def act(self, state: tuple[tuple[int, int, int, int], int]) -> LightPhase:
-        lookupIndex = self.__convertStateToIndexes(state)
-        if random() < self.__epsilon:
-            return self.__actions[randint(0, len(self.__qTable[lookupIndex]) - 1)]
-        return self.__actions[np.argmax(self.__qTable[lookupIndex])]
+        if self.__flipped:
+            return LightPhase.AllRed
+        def computeNewAction():
+            lookupIndex = self.__convertStateToIndexes(state)
+            self.__epsilon *= 0.99
+            if random() < self.__epsilon:
+                return self.__actions[randint(0, len(self.__actions) - 1)]
+            return self.__actions[np.argmax(self.__qTable[lookupIndex])]
+        newAction = computeNewAction()
+        if newAction == self.__previousAction:
+            return self.__previousAction
+        self.__previousAction = newAction
+        self.__flipped = self.__yieldDuration
+        return LightPhase.AllRed
 
-    @callOnePerNCalls(10)
     def update(self, action: LightPhase, state: tuple[tuple[int, int, int, int], int], reward: int) -> None:
+        if self.__flipped:
+            self.__flipped -= 1
+            return
         lookupIndex = self.__convertStateToIndexes(state) + (self.__convertActionToIndex(action),)
         self.__qTable[lookupIndex] += self.__learningRate * (reward - self.__qTable[lookupIndex])
-        
+
     @property
     def loss(self):
         return 0

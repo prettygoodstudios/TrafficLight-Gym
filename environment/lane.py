@@ -22,7 +22,7 @@ class Lane:
         """Gets an iterable of the vehicles intersecting the provided geometry"""
         return self.getVehicles(lambda v: geometry.intersects(v.geometry))
 
-    def getVehicles(self, filterer: callable) -> iter:
+    def getVehicles(self, filterer: callable = lambda _: True) -> iter:
         """Gets an iterable of the vehicles that satisfy the filterer's conditions"""
         return filter(filterer, self.__vehicles)
 

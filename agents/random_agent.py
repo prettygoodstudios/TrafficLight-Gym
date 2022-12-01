@@ -14,7 +14,7 @@ class RandomAgent(Agent):
 
     def act(self, state: tuple[tuple[int, int, int, int], int]) -> LightPhase:
         return self.__phase
-
+ 
     def update(self, action: LightPhase, state: tuple[tuple[int, int, int, int], int], reward: int) -> None:
         self.__frame += 1
         if self.__frame % 20 == 0:
