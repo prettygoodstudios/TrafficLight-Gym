@@ -68,7 +68,7 @@ This reward structure sums up the idle time of all vehicles currently queued up 
 
 ### Environment
 
-I initially attempted to use the following Open AI gym https://github.com/beedrill/gym_trafficlight. I ran into some issues that I was unable to resolve. For this reason, I wrote my own simple simulator. My simulator is found at: . This simulator has the ability to support various different reward structures, logging formats and visualization options.
+I initially attempted to use the following Open AI gym https://github.com/beedrill/gym_trafficlight. I ran into some issues that I was unable to resolve. For this reason, I wrote my own simple simulator. My simulator is found at: https://github.com/prettygoodstudios/TrafficLight-Gym. This simulator has the ability to support various different reward structures, logging formats and visualization options.
 
 ## Results
 
@@ -101,3 +101,5 @@ From my current results it appears that a Q-Table based agent is a poor choice f
 * https://arxiv.org/pdf/2104.10455.pdf
 
 * https://github.com/beedrill/gym_trafficlight
+
+* https://github.com/prettygoodstudios/TrafficLight-Gym
