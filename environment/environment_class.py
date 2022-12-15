@@ -22,7 +22,7 @@ class Environment:
                     self.__intersection.removeVehicle(vehicle)
                     self.__intersection.removeVehicle(vehicleTwo)
         
-        return -self.__intersection.getTotalIdleTime() - crashes * 50
+        return -self.__intersection.getTotalIdleTime() - crashes * 10000
 
     @property
     def state(self) -> tuple[tuple[int, int, int, int], int]:

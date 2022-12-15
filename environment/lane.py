@@ -1,7 +1,6 @@
 from collections import deque
 from typing import Union
 from .vehicle import Vehicle, VehicleOrientation
-from .vehicle_map import VehicleMap
 from .rectangle import Rectangle
 
 class Lane:
@@ -37,11 +36,10 @@ class Lane:
             self.__vehicles.remove(vehicle)
             vehicle.destroy()
 
-    def update(self, vehicleMap: VehicleMap):
+    def update(self):
         """Used to update lane at each discrete time step"""
         if len(self.__vehicles) > 0 and self.__vehicles[0].geometry.intersects(self.__end):
             self.__vehicles.popleft().destroy()
-        vehicleMap.update(list(self.__vehicles), False)
 
     @property
     def start(self) -> Rectangle:

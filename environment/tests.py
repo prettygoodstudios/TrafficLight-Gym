@@ -1,44 +1,8 @@
 from .rectangle import Rectangle
 from .car import Car
 from .constants import VehicleOrientation
-from .vehicle_map import VehicleMap
 from .vehicle import Vehicle
 
-def testVehicleMap():
-    map = VehicleMap(10, 10)
-    vehicles: list[Vehicle] = [
-        Car(2, 2, VehicleOrientation.North, map), 
-        Car(9, 9, VehicleOrientation.North, map), 
-        Car(-1, -1, VehicleOrientation.North, map),
-        Car(0, 5, VehicleOrientation.East, map),
-    ]
-    map.update(vehicles)
-    print(map)
-    assert str(map) == """X_________
-X_________
-__XX______
-__XX______
-__XX______
-XXX_______
-XXX_______
-__________
-__________
-_________X
-"""
-    map.update([])
-    print(map)
-    assert str(map) == """__________
-__________
-__________
-__________
-__________
-__________
-__________
-__________
-__________
-__________
-"""
-    print("Passed vehicle map tests!!!")
 
 def testRectangleIntersection():
     rectOne = Rectangle((10, 10), (0, 0))
@@ -50,7 +14,6 @@ def testRectangleIntersection():
     print("Passed rectangle intersection tests!!!")
 
 def main():
-    testVehicleMap()
     testRectangleIntersection()
 
 if __name__ == '__main__':

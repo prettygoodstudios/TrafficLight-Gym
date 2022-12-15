@@ -1,7 +1,9 @@
 from typing import Union
-from .vehicle import Vehicle, VehicleOrientation
+
 from .rectangle import Rectangle
 from .standard_driver import StandardDriver
+from .vehicle import Vehicle, VehicleOrientation
+
 
 class Car(Vehicle):
     __slots__ = ['__velocity', '__geometry', '__orientation', '__strategy', '__idleTime']
@@ -21,8 +23,6 @@ class Car(Vehicle):
         self.__geometry = Rectangle(self.__geometry.dimensions, (x + velocityX, y + velocityY))
         if velocityX + velocityY == 0:
             self.__idleTime += 1
-        else:
-            self.__idleTime = 0
 
     def go(self) -> None:
         self.__velocity = self.__strategy.move()

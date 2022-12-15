@@ -1,7 +1,6 @@
 from .visualizer import Visualizer
 from .constants import LightPhase
 from .rectangle import Rectangle
-from .vehicle_map import VehicleMap
 from .lane import Lane
 import pygame
 
@@ -23,7 +22,7 @@ class PyGameVisualizer(Visualizer):
     def reset(self) -> None:
         self.__screen.fill(self.__background)
 
-    def render(self, lanes: list[Lane], phase: LightPhase, intersection: Rectangle, vehicleMap: VehicleMap) -> None:
+    def render(self, lanes: list[Lane], phase: LightPhase, intersection: Rectangle) -> None:
         scale = lambda x: (self.__scale * e for e in x)
         def transform(x: iter):
             x, y, width, height = x

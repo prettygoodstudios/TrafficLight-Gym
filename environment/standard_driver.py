@@ -50,6 +50,10 @@ class StandardDriver(DrivingStrategy):
         stop = self.__handleStopping()
         if stop:
             return stop
+        velocityX, velocityY = self.__vehicle.velocity
+        magnitude = abs(velocityX + velocityY) 
+        if magnitude < self.__maxVelocity * 0.2 and self.__vehicle.geometry.minDistance(self.__intersection) > 5:
+            return self.__move(0.1)
         if self.__vehicle.geometry.intersects(self.__intersection):
             return self.__move(-0.1)
         return self.__stop(self.__brakeAcceleration)
